@@ -1,0 +1,27 @@
+{
+  "profile": "standard",
+  "role": "finance",
+  "source_dirs": ["D:/contracts/2023"],
+  "output_dir": "D:/contracts/output",
+  "year_range": [2023, 2023],
+  "fields": [
+    "contract_no", "title", "party_a", "party_b", "sign_date",
+    "start_date", "end_date", "amount", "amount_in_words",
+    "tax_rate", "payment_terms", "archive_location"
+  ],
+  "outputs": {
+    "ledger_xlsx": true,
+    "ledger_csv": true,
+    "sqlite_db": true,
+    "review_queue": true,
+    "report_md": true
+  },
+  "review_level": "standard",
+  "confidence_threshold": 0.85,
+  "compare_with_existing_ledger": null,
+  "incremental": true,
+  "allow_network": false,
+  "allow_modify_originals": false,
+  "mask_sensitive_fields": false,
+  "batch_size": 20
+}
