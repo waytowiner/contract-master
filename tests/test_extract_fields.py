@@ -578,6 +578,9 @@ class TestReleaseHygiene(unittest.TestCase):
     def test_package_allowlist_rejects_runtime_data(self):
         self.assertTrue(should_sync(Path("LICENSE")))
         self.assertTrue(should_sync(Path("README.md")))
+        self.assertTrue(should_sync(Path("docs/images/workflow.png")))
+        self.assertFalse(should_sync(Path("docs/images/contract.png")))
+        self.assertFalse(should_sync(Path("docs/images/workflow.jpg")))
         self.assertTrue(should_sync(Path("scripts/query_db.py")))
         self.assertTrue(should_sync(Path("templates/run-config.example.json")))
         self.assertFalse(should_sync(Path("scripts/output/ocr.json")))

@@ -17,11 +17,14 @@ import sys
 from pathlib import Path
 
 SRC = Path(__file__).resolve().parents[1]
-SYNC_DIRS = ["scripts", "assets", "references", "templates", "tests"]
+SYNC_DIRS = ["scripts", "assets", "references", "templates", "tests", "docs"]
 SYNC_FILES = ["SKILL.md", "LICENSE", "README.md"]
+# 经检查的合成文档图片；不放开任意图片或运行数据的打包权限。
+DOC_IMAGES = {"docs/images/workflow.png", "docs/images/ledger-review.png",
+              "docs/images/trace-search.png"}
 SYNC_SUFFIXES = {"scripts": {".py"}, "assets": {".sql"}, "references": {".md"},
                  "templates": {".json"}, "tests": {".py"}}
-REQUIRED_FILES = {"SKILL.md", "LICENSE", "README.md", "assets/schema.sql", "references/rules-of-thumb.md",
+REQUIRED_FILES = DOC_IMAGES | {"SKILL.md", "LICENSE", "README.md", "assets/schema.sql", "references/rules-of-thumb.md",
                   "templates/run-config.example.json", "tests/test_extract_fields.py"} | {
     f"scripts/{name}.py" for name in (
         "scan_files", "ocr_extract", "extract_fields", "build_output",
@@ -56,6 +59,8 @@ def should_sync(rel: Path) -> bool:
         return False
     if rel.as_posix() in SYNC_FILES:
         return True
+    if rel.as_posix() in DOC_IMAGES:
+        return True
     if not rel.parts or rel.parts[0] not in SYNC_SUFFIXES:
         return False
     if rel.parts[0] == "templates" and rel.name != "run-config.example.json":
@@ -68,7 +73,8 @@ def validate_sources():
     if missing:
         raise SystemExit(f"错误：发布必需文件缺失：{missing}")
     runtime = [p.relative_to(SRC).as_posix() for p in SRC.rglob("*")
-               if p.is_file() and p.suffix.lower() in RUNTIME_SUFFIXES]
+               if p.is_file() and p.suffix.lower() in RUNTIME_SUFFIXES
+               and p.relative_to(SRC).as_posix() not in DOC_IMAGES]
     if runtime:
         raise SystemExit(f"错误：源码树含合同/运行数据，已停止打包：{runtime[:20]}")
 

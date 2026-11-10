@@ -22,6 +22,9 @@ release-check-*/
 *.tiff
 *.webp
 *.pdf
+!docs/images/workflow.png
+!docs/images/ledger-review.png
+!docs/images/trace-search.png
 inventory.json
 extracted.json
 ocr_failures.json
